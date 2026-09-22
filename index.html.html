@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PPE 防護衣穿戴／脫除挑戰</title>
+<style>
+:root{--bg:#eef6f8;--card:#fff;--ink:#17313a;--muted:#66808a;--brand:#16879a;--brand2:#0e6978;--ok:#17865d;--bad:#c94747;--line:#d8e8ec}
+*{box-sizing:border-box} body{margin:0;font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;background:linear-gradient(135deg,#e7f4f7,#f8fbfc);color:var(--ink)}
+.wrap{max-width:1050px;margin:auto;padding:28px 18px 48px}
+header{text-align:center;margin-bottom:18px} h1{margin:0 0 7px;font-size:clamp(25px,4vw,38px)} .sub{color:var(--muted)}
+.card{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:24px;box-shadow:0 16px 45px #315c6814;padding:24px}
+.login{max-width:540px;margin:50px auto}.field{width:100%;font-size:18px;padding:15px 16px;border:1px solid #bdd4da;border-radius:13px;outline:none}.field:focus{border-color:var(--brand);box-shadow:0 0 0 3px #16879a20}
+button{font:inherit;cursor:pointer}.primary{width:100%;margin-top:14px;padding:14px;border:0;border-radius:13px;background:var(--brand);color:#fff;font-weight:800}.primary:hover{background:var(--brand2)}
+.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px;flex-wrap:wrap}.badge{background:#e7f6f8;color:#126c79;border-radius:999px;padding:8px 12px;font-weight:800}.progress{height:10px;background:#e7eff1;border-radius:99px;overflow:hidden;flex:1;min-width:180px}.progress>i{display:block;height:100%;width:0;background:var(--brand);transition:.25s}
+.game{display:grid;grid-template-columns:1fr 1.25fr;gap:20px}
+.avatarBox{min-height:460px;border-radius:20px;background:linear-gradient(#eaf7fa,#dceff3);display:grid;place-items:center;position:relative;overflow:hidden;border:1px solid var(--line)}
+.person{position:relative;width:210px;height:390px}.head{position:absolute;left:72px;top:18px;width:66px;height:76px;border-radius:48%;background:#f2c9a7;border:3px solid #b88263}.hair{position:absolute;left:69px;top:12px;width:72px;height:32px;background:#3d3b3a;border-radius:50px 50px 20px 20px}.body{position:absolute;left:54px;top:91px;width:102px;height:165px;background:#dbe9ed;border-radius:24px 24px 12px 12px}.leg{position:absolute;top:245px;width:43px;height:128px;background:#cbdce1;border-radius:8px}.l1{left:58px}.l2{right:58px}
+.gear{position:absolute;display:none;z-index:4}.on{display:block}
+.mask{left:73px;top:55px;width:64px;height:33px;background:#f4f4f4;border:2px solid #9daeb3;border-radius:9px}.suit{left:43px;top:82px;width:124px;height:185px;background:#f8fbfc;border:3px solid #b8cdd3;border-radius:28px 28px 15px 15px;opacity:.96}.suit:after{content:"";position:absolute;left:59px;top:8px;width:2px;height:160px;background:#c3d5da}
+.shoes{left:48px;top:354px;width:114px;height:25px;border-left:48px solid #66c6d4;border-right:48px solid #66c6d4;border-radius:8px}.face{left:65px;top:39px;width:80px;height:70px;border:4px solid #73aeb8;border-radius:10px;background:#ccebf155}.gloves{left:23px;top:202px;width:164px;height:38px;border-left:38px solid #f2d35e;border-right:38px solid #f2d35e;border-radius:14px}
+.hh{position:absolute;right:15px;bottom:14px;background:#fff;border:1px solid var(--line);padding:8px 10px;border-radius:12px;color:var(--muted);font-size:13px}
+.panel h2{margin:4px 0}.hint{color:var(--muted);margin:4px 0 16px}.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.choice{padding:16px 10px;border:1px solid #bcd5db;background:#fff;border-radius:14px;font-weight:800;color:#21454e;transition:.15s}.choice:hover{transform:translateY(-1px);border-color:var(--brand);background:#f2fbfc}.choice:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.msg{margin-top:16px;min-height:58px;padding:13px 14px;border-radius:13px;background:#f5f8f9;color:#58717a}.msg.ok{background:#e9f7f1;color:#126b4b}.msg.bad{background:#fff0f0;color:#a83232}
+.modal{position:fixed;inset:0;background:#16343b99;display:none;place-items:center;padding:18px;z-index:20}.modal.show{display:grid}.modalBox{max-width:470px;width:100%;background:white;border-radius:22px;padding:26px;text-align:center;box-shadow:0 24px 80px #0004}.modalBox h2{font-size:28px}.modalBox .primary{max-width:300px}
+.result{text-align:center;padding:28px}.big{font-size:68px}.stats{margin:20px auto;max-width:520px;text-align:left;background:#f5fafb;border-radius:16px;padding:16px;line-height:2}
+.small{font-size:12px;color:#789099;margin-top:18px}
+@media(max-width:760px){.game{grid-template-columns:1fr}.avatarBox{min-height:380px}.person{transform:scale(.86)}.choices{grid-template-columns:1fr 1fr}.card{padding:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1>🛡️ PPE 防護衣穿戴／脫除挑戰</h1><div class="sub">連身型防護衣｜教育訓練模式</div></header>
+
+<section id="login" class="card login">
+  <h2>開始挑戰</h2><p class="sub">請輸入員工編號後開始。穿戴與脫除兩關皆完成才算通關。</p>
+  <input id="emp" class="field" autocomplete="off" placeholder="員工編號" maxlength="20">
+  <button class="primary" onclick="start()">開始挑戰</button>
+</section>
+
+<section id="play" class="card" hidden>
+ <div class="topbar">
+  <span id="stageBadge" class="badge">第一關｜穿戴</span>
+  <div class="progress"><i id="bar"></i></div>
+  <span id="stepText">0 / 8</span>
+ </div>
+ <div class="game">
+  <div class="avatarBox">
+   <div class="person">
+    <div class="hair"></div><div class="head"></div><div class="body"></div><div class="leg l1"></div><div class="leg l2"></div>
+    <div id="g-suit" class="gear suit"></div><div id="g-mask" class="gear mask"></div><div id="g-shoes" class="gear shoes"></div><div id="g-face" class="gear face"></div><div id="g-gloves" class="gear gloves"></div>
+   </div>
+   <div class="hh">請依正確順序選擇</div>
+  </div>
+  <div class="panel">
+   <h2 id="title">穿戴挑戰</h2>
+   <div class="hint">只顯示用品／動作名稱，不提供步驟提示。</div>
+   <div id="choices" class="choices"></div>
+   <div id="msg" class="msg">請選擇第一個步驟。</div>
+  </div>
+ </div>
+</section>
+
+<section id="done" class="card result" hidden>
+ <div class="big">🏆</div><h2>PPE 挑戰完成</h2><p>穿戴與脫除流程皆已完成。</p>
+ <div id="stats" class="stats"></div>
+ <button class="primary" style="max-width:320px" onclick="location.reload()">下一位／重新挑戰</button>
+</section>
+</div>
+
+<div id="modal" class="modal"><div class="modalBox">
+ <div style="font-size:54px">❌</div><h2 id="failTitle">順序錯誤</h2>
+ <p id="failText">請重新挑戰本關。</p>
+ <button class="primary" onclick="retry()">重新挑戰本關</button>
+</div></div>
+
+<script>
+const DON=[
+ {n:"手部衛生",k:"hh"}, {n:"N95口罩",k:"mask"}, {n:"連身型防護衣",k:"suit"},
+ {n:"鞋套",k:"shoes"}, {n:"手部衛生",k:"hh"}, {n:"面罩／護目鏡",k:"face"},
+ {n:"手套",k:"gloves"}, {n:"裝備檢視",k:"check"}
+];
+const DOFF=[
+ {n:"手套",k:"gloves"}, {n:"手部衛生",k:"hh"}, {n:"面罩／護目鏡",k:"face"},
+ {n:"鞋套",k:"shoes"}, {n:"手部衛生",k:"hh"}, {n:"連身型防護衣",k:"suit"},
+ {n:"手部衛生",k:"hh"}, {n:"N95口罩",k:"mask"}, {n:"手部衛生",k:"hh"}
+];
+const ITEMS=["手部衛生","N95口罩","連身型防護衣","鞋套","面罩／護目鏡","手套","裝備檢視"];
+let employee="",stage="don",idx=0,donErrors=0,doffErrors=0,startTime=0;
+const $=id=>document.getElementById(id);
+
+function start(){
+ employee=$("emp").value.trim();
+ if(!employee){$("emp").focus();return}
+ startTime=Date.now(); $("login").hidden=true;$("play").hidden=false; setupStage();
+}
+function seq(){return stage==="don"?DON:DOFF}
+function setupStage(){
+ idx=0;
+ $("stageBadge").textContent=stage==="don"?"第一關｜穿戴":"第二關｜脫除";
+ $("title").textContent=stage==="don"?"穿戴挑戰":"脫除挑戰";
+ $("msg").className="msg";$("msg").textContent="請選擇第一個步驟。";
+ if(stage==="don") clearGear(); else fullGear();
+ render(); update();
+}
+function render(){
+ const c=$("choices");c.innerHTML="";
+ ITEMS.forEach(name=>{
+  const b=document.createElement("button");b.className="choice";b.textContent=name;
+  b.onclick=()=>pick(name);c.appendChild(b);
+ });
+}
+function pick(name){
+ const expected=seq()[idx];
+ if(name!==expected.n){
+   stage==="don"?donErrors++:doffErrors++;
+   $("failTitle").textContent=(stage==="don"?"穿戴":"脫除")+"順序錯誤";
+   $("failText").textContent=stage==="don"?"本次穿戴失敗，請重新進行穿戴挑戰。":"本次脫除失敗，只需重新進行脫除，不會回到穿戴。";
+   $("modal").classList.add("show"); return;
+ }
+ animateGear(expected.k);
+ idx++; update();
+ $("msg").className="msg ok"; $("msg").textContent="✓ 正確，請繼續。";
+ if(idx===seq().length) setTimeout(passStage,350);
+}
+function animateGear(k){
+ if(k==="hh"||k==="check") return;
+ const e=$("g-"+k);
+ if(stage==="don")e.classList.add("on"); else e.classList.remove("on");
+}
+function update(){
+ const total=seq().length;$("stepText").textContent=idx+" / "+total;$("bar").style.width=(idx/total*100)+"%";
+}
+function retry(){$("modal").classList.remove("show");setupStage()}
+function passStage(){
+ if(stage==="don"){
+   stage="doff";setupStage();$("msg").className="msg ok";$("msg").textContent="✓ 穿戴通過！現在進行脫除挑戰。";
+ }else finish();
+}
+function finish(){
+ $("play").hidden=true;$("done").hidden=false;
+ const sec=Math.round((Date.now()-startTime)/1000);
+ $("stats").innerHTML=`員工編號：<b>${escapeHtml(employee)}</b><br>
+ 穿戴：<b>${donErrors===0?"一次成功":"曾錯誤 "+donErrors+" 次"}</b><br>
+ 脫除：<b>${doffErrors===0?"一次成功":"曾錯誤 "+doffErrors+" 次"}</b><br>
+ 完成時間：<b>${Math.floor(sec/60)} 分 ${sec%60} 秒</b><br>
+ 通關結果：<b>完成</b>`;
+}
+function clearGear(){["mask","suit","shoes","face","gloves"].forEach(k=>$("g-"+k).classList.remove("on"))}
+function fullGear(){["mask","suit","shoes","face","gloves"].forEach(k=>$("g-"+k).classList.add("on"))}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+$("emp").addEventListener("keydown",e=>{if(e.key==="Enter")start()});
+</script>
+</body></html>
